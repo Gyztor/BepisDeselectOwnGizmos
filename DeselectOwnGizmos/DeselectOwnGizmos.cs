@@ -1,35 +1,39 @@
 using Elements.Core;
 using FrooxEngine;
 using HarmonyLib;
-using ResoniteModLoader;
-using System;
+using BepInEx;
+using BepInEx.Configuration;
+using BepInEx.NET.Common;
+using BepInExResoniteShim;
 using FrooxEngine.ProtoFlux;
+
 
 namespace DeselectOwnGizmos
 {
-    public class DeselectOwnGizmos : ResoniteMod
+    [ResonitePlugin(PluginMetadata.GUID, PluginMetadata.NAME, PluginMetadata.VERSION, PluginMetadata.AUTHORS, PluginMetadata.REPOSITORY_URL)]
+    [BepInDependency(BepInExResoniteShim.PluginMetadata.GUID)]
+    public class DeselectOwnGizmos : BasePlugin
     {
-        public override string Name => "DeselectOwnGizmos";
-        public override string Author => "badhaloninja";
-        public override string Version => "2.0.1";
-        public override string Link => "https://github.com/badhaloninja/DeselectOwnGizmos";
-        
-        private static ModConfiguration Config;
+        private static ConfigEntry<bool>? ShowOnProtoFluxTool;
 
-        [AutoRegisterConfigKey] private static readonly ModConfigurationKey<bool> ShowOnProtoFluxTool = new("ShowOnProtoFluxTool", "Adds deselect to the Protoflux tool", () => false);
-
-        public override void OnEngineInit()
+        public override void Load()
         {
-            Config = GetConfiguration();
+            ShowOnProtoFluxTool = Config.Bind(
+                "General",
+                "ShowOnProtoFluxTool",
+                false,
+                "Adds deselect button to the Protoflux tool"
+            );
 
-            Harmony harmony = new("ninja.badhalo.DeselectOwnGizmos");
-            harmony.PatchAll();
+            HarmonyInstance.PatchAll();
+
+            Log.LogInfo("DeselectOwnGizmos mod loaded!");
         }
 
         const string DeselectOwnIcon = "6c6fe0b17b9f9fc07d9c47363988eb98560ff2daf81132bc041bb4ef6a487c18";
 
         [HarmonyPatch]
-        class ToolPatches
+        static class ToolPatches
         {
 
             [HarmonyPostfix]
@@ -46,7 +50,7 @@ namespace DeselectOwnGizmos
             [HarmonyPatch(typeof(ProtoFluxTool), "GenerateMenuItems")]
             public static void FluxAddDeselectButton(ProtoFluxTool __instance, ContextMenu menu)
             {
-                if (!Config.GetValue(ShowOnProtoFluxTool)) return;
+                if (!ShowOnProtoFluxTool.Value) return;
 
                 Uri deselect = __instance.Cloud.Assets.GenerateURL(DeselectOwnIcon);
                 ContextMenuItem item = menu.AddItem("Deselect Own", deselect, colorX.White);
@@ -76,7 +80,7 @@ namespace DeselectOwnGizmos
         }
 
         [HarmonyPatch(typeof(SlotRecord), "Pressed")]
-        class GenerateGizmoFromInspector
+        static class GenerateGizmoFromInspector
         {
             public static void Prefix(SlotRecord __instance, ref double ____lastPress)
             {
@@ -88,7 +92,7 @@ namespace DeselectOwnGizmos
         }
 
         [HarmonyPatch(typeof(DevCreateNewForm), "OpenInspector")]
-        class GenerateGizmoCreateNew
+        static class GenerateGizmoCreateNew
         {
             public static void Prefix(Slot slot)
             {

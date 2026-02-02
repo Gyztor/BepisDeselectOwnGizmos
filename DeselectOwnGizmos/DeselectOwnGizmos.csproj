@@ -1,34 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<AppName>Resonite</AppName>
-		<ModLoaderShort>rml</ModLoaderShort>
-
 		<Product>DeselectOwnGizmos</Product>
-		<Version>2.0.1</Version>
-
+		<Version>2.1.0</Version>
 		<Company>badhaloninja</Company>
 		<Copyright>Copyright © $(Company) 2024</Copyright>
-
+		<RepositoryUrl>https://github.com/badhaloninja/DeselectOwnGizmos</RepositoryUrl>
+		<PackageId>dev.badhaloninja.deselectowngizmos</PackageId>
 		<Authors>$(Company)</Authors>
 		<AssemblyTitle>$(Product)</AssemblyTitle>
 		<AssemblyName>$(Product)</AssemblyName>
-
 		<RootNamespace>DeselectOwnGizmos</RootNamespace>
-		<ProjectGuid>{B3CE3A24-7F2B-461F-B2A9-D34A1F68AC42}</ProjectGuid>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<TargetFramework>net472</TargetFramework>
-		<LangVersion>preview</LangVersion>
-		<FileAlignment>512</FileAlignment>
-		<Deterministic>true</Deterministic>
+		<ImplicitUsings>enable</ImplicitUsings>
+    	<Nullable>enable</Nullable>
+    	<Deterministic>true</Deterministic>
+    	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    	<CopyToPlugins>false</CopyToPlugins>
+    	<ThunderstorePackable>true</ThunderstorePackable>
+		<TargetFramework>net10.0</TargetFramework>
+		<PluginTargetDir>$(GamePath)BepInEx\plugins\$(Authors)-$(AssemblyName)\$(AssemblyName)</PluginTargetDir>
+		<RestoreAdditionalProjectSources>
+      		https://nuget-modding.resonite.net/v3/index.json;
+    	</RestoreAdditionalProjectSources>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<CopyLocal>false</CopyLocal>
-		<CopyToMods Condition="'$(CopyToMods)'==''">true</CopyToMods>
 		<DebugSymbols Condition="'$(Configuration)'=='Release'">false</DebugSymbols>
 		<DebugType Condition="'$(Configuration)'=='Release'">None</DebugType>
 	</PropertyGroup>
@@ -41,39 +37,49 @@
 
 	<PropertyGroup>
 		<AppPath>$(MSBuildThisFileDirectory)$(AppName)</AppPath>
-		<AppPath Condition="Exists('E:\Programs\Steam\steamapps\common\$(AppName)')">E:\Programs\Steam\steamapps\common\$(AppName)\</AppPath>
-		<AppPath Condition="Exists('E:\SteamLibrary\steamapps\common\$(AppName)')">E:\SteamLibrary\steamapps\common\$(AppName)\</AppPath>
-		<AppPath Condition="Exists('$(HOME)/.steam/steam/steamapps/common/$(AppName)/')">$(HOME)/.steam/steam/steamapps/common/$(AppName)/</AppPath>
-		<AppPath Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\$(AppName)\')">C:\Program Files (x86)\Steam\steamapps\common\$(AppName)\</AppPath>
-
-		<AppData Condition="Exists('$(AppPath)$(AppName)_Data')">$(AppPath)$(AppName)_Data\Managed\</AppData>
-
-		<AlternateDataPath>$(AppPath)\Alt\</AlternateDataPath>
-		<AlternateDataPath Condition="Exists('$(AppPath)')">$(AppPath)_altData</AlternateDataPath>
+		<AppPath Condition="Exists('E:\Programs\Steam\steamapps\common\Resonite')">E:\Programs\Steam\steamapps\common\Resonite\</AppPath>
+		<AppPath Condition="Exists('E:\SteamLibrary\steamapps\common\Resonite')">E:\SteamLibrary\steamapps\common\Resonite\</AppPath>
+		<AppPath Condition="Exists('$(HOME)/.steam/steam/steamapps/common/Resonite/')">$(HOME)/.steam/steam/steamapps/common/Resonite/</AppPath>
+		<AppPath Condition="Exists('$(MSBuildProgramFiles32)\Steam\steamapps\common\Resonite\')">$(MSBuildProgramFiles32)\Steam\steamapps\common\Resonite\</AppPath>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<Reference Include="$(AppName)ModLoader">
-			<HintPath>$(AppPath)$(AppName)ModLoader.dll</HintPath>
-			<HintPath>$(AppPath)Libraries\$(AppName)ModLoader.dll</HintPath>
-		</Reference>
-		<Reference Include="HarmonyLib">
-			<HintPath>$(AppPath)$(ModLoaderShort)_libs\0Harmony.dll</HintPath>
-			<HintPath Condition="Exists('$(AppPath)0Harmony.dll')">$(AppPath)0Harmony.dll</HintPath>
-		</Reference>
-		<Reference Include="FrooxEngine">
-			<HintPath>$(AppData)FrooxEngine.dll</HintPath>
-		</Reference>
+
+  	<!-- Modding dependencies -->
+  	<ItemGroup>
+   		<PackageReference Include="BepInEx.NET.CoreCLR" Version="6.0.0-be.*" IncludeAssets="compile" />
+    	<PackageReference Include="BepInEx.ResonitePluginInfoProps" Version="3.*" />
+    	<PackageReference Include="ResoniteModding.BepInExResoniteShim" Version="0.8.*" />
+    	<PackageReference Include="ResoniteModding.BepisLocaleLoader" Version="1.*" />
+    	<PackageReference Include="HarmonyX" Version="2.*" />
+  	</ItemGroup>
+  	<!-- NuGet fallback stripped game references -->
+  	<ItemGroup Condition="!Exists('$(AppPath)')">
+    	<PackageReference Include="Resonite.GameLibs" Version="2026.*" />
+  	</ItemGroup>
+
+  	<ItemGroup Condition="Exists('$(AppPath)')">
+    	<Reference Include="FrooxEngine">
+      		<HintPath>$(AppPath)FrooxEngine.dll</HintPath>
+      		<Private>False</Private>
+    	</Reference>
 		<Reference Include="SkyFrost.Base">
-			<HintPath>$(AppData)SkyFrost.Base.dll</HintPath>
+			<HintPath>$(AppPath)SkyFrost.Base.dll</HintPath>
+			<Private>False</Private>
 		</Reference>
 		<Reference Include="Elements.Core">
-			<HintPath>$(AppData)Elements.Core.dll</HintPath>
+			<HintPath>$(AppPath)Elements.Core.dll</HintPath>
+			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
-	
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(CopyToMods)'=='true'">
-		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AppPath)$(ModLoaderShort)_mods" />
-		<Message Text="Copied $(TargetFileName) to $(AppPath)$(ModLoaderShort)_mods" Importance="high" />
-	</Target>
+
+	<!-- Post-build copy to game plugins folder -->
+  	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    	<ItemGroup>
+    		<PluginFiles Include="$(TargetPath)" />
+    		<PluginFiles Include="$(TargetDir)$(TargetName).pdb" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+    	</ItemGroup>
+    
+    	<Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(PluginTargetDir)" Condition="'$(CopyToPlugins)' == 'true'" />
+    	<Message Text="Copied plugin files to $(PluginTargetDir)" Importance="high" Condition="'$(CopyToPlugins)' == 'true'" />
+  	</Target>
 </Project>
