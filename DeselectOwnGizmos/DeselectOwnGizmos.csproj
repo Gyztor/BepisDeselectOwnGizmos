@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Product>DeselectOwnGizmos</Product>
-		<Version>2.1.0</Version>
+		<Version>2.1.1</Version>
 		<Company>badhaloninja</Company>
 		<Copyright>Copyright © $(Company) 2024</Copyright>
 		<RepositoryUrl>https://github.com/Gyztor/BepisDelesectOwnGizmos</RepositoryUrl>

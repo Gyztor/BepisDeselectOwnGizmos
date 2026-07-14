@@ -4,7 +4,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "GyztorMizirath"
 name = "DeselectOwnGizmos"
-versionNumber = "2.1.0"
+versionNumber = "2.1.1"
 description = "A Bepis Mod Loader mod that adds a Deselect Gizmos button that only deselects gizmos created by you."
 websiteUrl = "https://github.com/Gyztor/BepisDeselectOwnGizmos"
 containsNsfwContent = false
