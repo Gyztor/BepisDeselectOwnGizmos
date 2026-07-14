@@ -5,7 +5,7 @@ schemaVersion = "0.0.1"
 namespace = "GyztorMizirath"
 name = "DeselectOwnGizmos"
 versionNumber = "2.1.0"
-description = "A Bepis Mod Loader mod that stops Decimal Value type crashes with Modulus Protoflux Node."
+description = "A Bepis Mod Loader mod that adds a Deselect Gizmos button that only deselects gizmos created by you."
 websiteUrl = "https://github.com/Gyztor/BepisDeselectOwnGizmos"
 containsNsfwContent = false
 
