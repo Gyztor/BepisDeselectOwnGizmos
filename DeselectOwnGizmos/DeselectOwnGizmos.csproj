@@ -4,7 +4,7 @@
 		<Version>2.1.0</Version>
 		<Company>badhaloninja</Company>
 		<Copyright>Copyright © $(Company) 2024</Copyright>
-		<RepositoryUrl>https://github.com/badhaloninja/DeselectOwnGizmos</RepositoryUrl>
+		<RepositoryUrl>https://github.com/Gyztor/BepisDelesectOwnGizmos</RepositoryUrl>
 		<PackageId>dev.badhaloninja.deselectowngizmos</PackageId>
 		<Authors>$(Company)</Authors>
 		<AssemblyTitle>$(Product)</AssemblyTitle>
@@ -48,7 +48,7 @@
   	<ItemGroup>
    		<PackageReference Include="BepInEx.NET.CoreCLR" Version="6.0.0-be.*" IncludeAssets="compile" />
     	<PackageReference Include="BepInEx.ResonitePluginInfoProps" Version="3.*" />
-    	<PackageReference Include="ResoniteModding.BepInExResoniteShim" Version="0.8.*" />
+    	<PackageReference Include="ResoniteModding.BepInExResoniteShim" Version="0.9.*" />
     	<PackageReference Include="ResoniteModding.BepisLocaleLoader" Version="1.*" />
     	<PackageReference Include="HarmonyX" Version="2.*" />
   	</ItemGroup>

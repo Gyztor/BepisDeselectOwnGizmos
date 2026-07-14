@@ -1,0 +1,41 @@
+[config]
+schemaVersion = "0.0.1"
+
+[package]
+namespace = "GyztorMizirath"
+name = "DeselectOwnGizmos"
+versionNumber = "2.1.0"
+description = "A Bepis Mod Loader mod that stops Decimal Value type crashes with Modulus Protoflux Node."
+websiteUrl = "https://github.com/Gyztor/BepisDeselectOwnGizmos"
+containsNsfwContent = false
+
+[package.dependencies]
+ResoniteModding-BepisLoader = "1.6.0"
+
+
+[build]
+icon = "./Icon.png"
+readme = "./README.md"
+outdir = "./bin/build"
+
+[[build.copy]]
+source = "./LICENSE.md"
+target = "/"
+
+
+[[build.copy]]
+source = "./DeselectOwnGizmos/bin/Release/DeselectOwnGizmos.dll"
+target = "plugins/DeselectOwnGizmos/"
+
+[[build.copy]]
+source = "./DeselectOwnGizmos/bin/Release/DeselectOwnGizmos.pdb"
+target = "plugins/DeselectOwnGizmos/"
+
+[publish]
+repository = "https://thunderstore.io"
+communities = ["resonite"]
+
+[publish.categories]
+resonite = []
+
+
